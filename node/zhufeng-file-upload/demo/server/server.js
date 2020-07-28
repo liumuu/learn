@@ -2,6 +2,8 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const multiparty = require('multiparty')
+const uploadDir = `${__dirname}/upload`
 const fs = require('fs')
 const SparkMD5 = require('spark-md5')
 const PORT = 8888
@@ -19,8 +21,6 @@ app.use(
 )
 
 /*-API-*/
-const multiparty = require('multiparty')
-const uploadDir = `${__dirname}/upload`
 
 function handleMultiparty(req, res, temp) {
   return new Promise((resolve, reject) => {
