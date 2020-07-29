@@ -447,11 +447,13 @@ export function setupComponent(
 ) {
   isInSSRComponentSetup = isSSR
 
+  // ? 获取组件的属性和孩子
   const { props, children, shapeFlag } = instance.vnode
   const isStateful = shapeFlag & ShapeFlags.STATEFUL_COMPONENT
   initProps(instance, props, isStateful, isSSR)
   initSlots(instance, children)
 
+  // ? 安装状态组件(有数据的组件(对象))
   const setupResult = isStateful
     ? setupStatefulComponent(instance, isSSR)
     : undefined
@@ -463,6 +465,7 @@ function setupStatefulComponent(
   instance: ComponentInternalInstance,
   isSSR: boolean
 ) {
+  // ? 组件的选项
   const Component = instance.type as ComponentOptions
 
   if (__DEV__) {
@@ -491,6 +494,7 @@ function setupStatefulComponent(
     exposePropsOnRenderContext(instance)
   }
   // 2. call setup()
+  // ? 核心代码 composition-api初始化 setup
   const { setup } = Component
   if (setup) {
     const setupContext = (instance.setupContext =
@@ -577,6 +581,7 @@ export function registerRuntimeCompiler(_compile: any) {
   compile = _compile
 }
 
+// ? 
 function finishComponentSetup(
   instance: ComponentInternalInstance,
   isSSR: boolean
@@ -617,6 +622,7 @@ function finishComponentSetup(
   }
 
   // support for 2.x options
+  // ? 兼容2.0版本
   if (__FEATURE_OPTIONS_API__) {
     currentInstance = instance
     applyOptions(instance, Component)

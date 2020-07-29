@@ -1,92 +1,101 @@
-# vue-next [![beta](https://img.shields.io/npm/v/vue/next.svg)](https://www.npmjs.com/package/vue/v/next) [![CircleCI](https://circleci.com/gh/vuejs/vue-next.svg?style=svg&circle-token=fb883a2d0a73df46e80b2e79fd430959d8f2b488)](https://circleci.com/gh/vuejs/vue-next)
+# Vue-next
 
-## Status: Release Candidate
+[https://learn.kaikeba.com/catalog/211600](https://learn.kaikeba.com/catalog/211600)
 
-- All planned RFCs have been merged.
+## start
 
-- All [merged RFCs](https://github.com/vuejs/rfcs/pulls?q=is%3Apr+is%3Amerged+label%3A3.x) have been implemented.
+`yarn --ignore-scripts`
 
-- Vue CLI now has experimental support via [vue-cli-plugin-vue-next](https://github.com/vuejs/vue-cli-plugin-vue-next).
+`"dev": "node scripts/dev.js --sourcemap"`
 
-- There is also a simple plain webpack-based setup with Single-File Component support available [here](https://github.com/vuejs/vue-next-webpack-preview).
+## structure
 
-Please note that there could still be undocumented behavior inconsistencies with 2.x. When you run into such a case, please make sure to first check if the behavior difference has already been proposed in an existing RFC. If the inconsistency is not part of an RFC, then it's likely unintended, and an issue should be opened (please make sure to use the [issue helper](https://new-issue.vuejs.org/?repo=vuejs/vue-next) when opening new issues).
+vue
 
-In addition, the current implementation requires native ES2015+ in the runtime environment and does not support IE11 (yet). The IE11 compatible build will be worked on after we have reached RC stage.
+- compiler-dom
 
-The documentation of Vue 3 can be found at https://v3.vuejs.org/
+  - compiler-core
 
-## Status of the rest of the framework
+- reactivity
 
-### Vue Router
+- runtime-dom
 
-- [![alpha](https://img.shields.io/npm/v/vue-router/next.svg)](https://www.npmjs.com/package/vue-router/v/next)
-- [Github](https://github.com/vuejs/vue-router-next)
-- [RFCs](https://github.com/vuejs/rfcs/pulls?q=is%3Apr+is%3Amerged+label%3Arouter)
+  - runtime-core
 
-We still have a few minor router hook behavior consistency issues with `vue-router@3.x`, but these are the only things that is blocking the router from being marked as Beta. The router is usable for new, non-critical projects.
+## initialization process
 
-### Vuex
+componentEffect
 
-- [![beta](https://img.shields.io/npm/v/vuex/next.svg)](https://www.npmjs.com/package/vuex/v/next)
-- [Github](https://github.com/vuejs/vuex/tree/4.0)
+reactiveEffect
 
-The only difference between Vuex 4.0 and 3.x is that it's Vue 3 compatible! It is ready to enter RC together with Vue 3 core.
+effect
 
-### Vue CLI
+setupRenderEffect
 
-Vue 3 support in Vue CLI is currently provided via the [vue-cli-plugin-vue-next](https://github.com/vuejs/vue-cli-plugin-vue-next) plugin. You can scaffold a new project and then run `vue add vue-next` to switch to Vue 3. Vue 3 will become a option in the project creation process when it reaches RC.
+mountComponent
 
-Note if you are not particularly attached to webpack and IE11 support, you can also start a Vue 3 project with [Vite](https://github.com/vitejs/vite).
+processComponent
 
-### JSX Support
+patch
 
-There are currently two JSX transform implementations for Vue 3 with slightly differing syntax (for Vue specific features):
+render
 
-- [vueComponent/jsx](https://github.com/vueComponent/jsx)
-- [HcySunYang/vue-next-jsx](https://github.com/HcySunYang/vue-next-jsx)
+mount
 
-We are using [this thread](https://github.com/vuejs/jsx/issues/141) to unify the design and land on an official specification of how Vue features should be handled in JSX. If you use Vue with JSX, please provide your feedback in that thread.
+app.mount
 
-### Other Projects
+(anonymous)
 
-| Project             | Status |
-| ------------------- | ------ |
-| vue-devtools        | [![alpha][vd-badge]][vd-npm] [[Github][vd-code]] |
-| eslint-plugin-vue   | [![alpha][epv-badge]][epv-npm] [[Github][epv-code]] |
-| @vue/test-utils     | [![alpha][vtu-badge]][vtu-npm] [[Github][vtu-code]] |
-| vue-class-component | [![alpha][vcc-badge]][vcc-npm] [[Github][vcc-code]] |
-| vue-loader          | [![alpha][vl-badge]][vl-npm] [[Github][vl-code]] |
-| rollup-plugin-vue   | [![alpha][rpv-badge]][rpv-npm] [[Github][rpv-code]] |
+## read code
 
-[vd-badge]: https://img.shields.io/npm/v/@vue/devtools/beta.svg
-[vd-npm]: https://www.npmjs.com/package/@vue/devtools/v/beta
-[vd-code]: https://github.com/vuejs/vue-devtools/tree/next
+createApp:
 
-[epv-badge]: https://img.shields.io/npm/v/eslint-plugin-vue/next.svg
-[epv-npm]: https://www.npmjs.com/package/eslint-plugin-vue/v/next
-[epv-code]: https://github.com/vuejs/eslint-plugin-vue
+`packages\runtime-dom\src\index.ts`
 
-[vtu-badge]: https://img.shields.io/npm/v/@vue/test-utils/next.svg
-[vtu-npm]: https://www.npmjs.com/package/@vue/test-utils/v/next
-[vtu-code]: https://github.com/vuejs/vue-test-utils-next
+createRenderer:
 
-[jsx-badge]: https://img.shields.io/npm/v/@ant-design-vue/babel-plugin-jsx.svg
-[jsx-npm]: https://www.npmjs.com/package/@ant-design-vue/babel-plugin-jsx
-[jsx-code]: https://github.com/vueComponent/jsx
+`packages\runtime-core\src\renderer.ts`
 
-[vcc-badge]: https://img.shields.io/npm/v/vue-class-component/next.svg
-[vcc-npm]: https://www.npmjs.com/package/vue-class-component/v/next
-[vcc-code]: https://github.com/vuejs/vue-class-component/tree/next
+baseCreateRenderer:
 
-[vl-badge]: https://img.shields.io/npm/v/vue-loader/next.svg
-[vl-npm]: https://www.npmjs.com/package/vue-loader/v/next
-[vl-code]: https://github.com/vuejs/vue-loader/tree/next
+`packages\runtime-core\src\apiCreateApp.ts`
 
-[rpv-badge]: https://img.shields.io/npm/v/rollup-plugin-vue/next.svg
-[rpv-npm]: https://www.npmjs.com/package/rollup-plugin-vue/v/next
-[rpv-code]: https://github.com/vuejs/rollup-plugin-vue/tree/next
+`return { render, hydrate, createApp: createAppAPI(render, hydrate)}`
 
-## Contribution
+createAppAPI:
 
-See [Contributing Guide](https://github.com/vuejs/vue-next/blob/master/.github/contributing.md).
+`packages\runtime-core\src\apiCreateApp.ts`
+
+mount:
+
+render:
+
+`packages\runtime-core\src\renderer.ts`
+
+patch:
+
+processComponent:
+
+mountComponent:
+
+setupComponent:
+
+setupStatefulComponent:
+
+setup:
+
+finishComponentSetup:
+
+**FEATURE_OPTIONS_API**:
+
+setupRenderEffect:
+
+renderComponentRoot:
+
+`packages\runtime-core\src\componentRenderUtils.ts`
+
+patch:
+
+`packages\runtime-core\src\renderer.ts`
+
+### 静态方法 → 实力方法

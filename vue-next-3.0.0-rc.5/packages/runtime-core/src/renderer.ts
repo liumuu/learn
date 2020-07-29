@@ -66,6 +66,7 @@ import { startMeasure, endMeasure } from './profiling'
 import { ComponentPublicInstance } from './componentProxy'
 import { devtoolsComponentRemoved, devtoolsComponentUpdated } from './devtools'
 import { initFeatureFlags } from './featureFlags'
+import { createApp } from 'test-dts'
 
 export interface Renderer<HostElement = RendererElement> {
   render: RootRenderFunction<HostElement>
@@ -351,6 +352,8 @@ export const setRef = (
  * })
  * ```
  */
+
+// ? 创建一个渲染器
 export function createRenderer<
   HostNode = RendererNode,
   HostElement = RendererElement
@@ -408,8 +411,11 @@ function baseCreateRenderer(
 
   // Note: functions inside this closure should use `const xxx = () => {}`
   // style in order to prevent being inlined by minifiers.
+  // ? diff算法
   const patch: PatchFn = (
+    // ? 老vnode
     n1,
+    // ? 新vnode
     n2,
     container,
     anchor = null,
@@ -430,6 +436,7 @@ function baseCreateRenderer(
       n2.dynamicChildren = null
     }
 
+    // ? 根据当前标签类型，做响应的操作
     const { type, ref, shapeFlag } = n2
     switch (type) {
       case Text:
@@ -445,6 +452,7 @@ function baseCreateRenderer(
           patchStaticNode(n1, n2, container, isSVG)
         }
         break
+      // ? 分片
       case Fragment:
         processFragment(
           n1,
@@ -470,6 +478,7 @@ function baseCreateRenderer(
             optimized
           )
         } else if (shapeFlag & ShapeFlags.COMPONENT) {
+          // ? createApp({})的{}，初始化走该逻辑
           processComponent(
             n1,
             n2,
@@ -1108,6 +1117,7 @@ function baseCreateRenderer(
     }
   }
 
+  // ? 自定义组件的处理逻辑
   const processComponent = (
     n1: VNode | null,
     n2: VNode,
@@ -1118,6 +1128,7 @@ function baseCreateRenderer(
     isSVG: boolean,
     optimized: boolean
   ) => {
+    // ? n1为空，说明是初始化
     if (n1 == null) {
       if (n2.shapeFlag & ShapeFlags.COMPONENT_KEPT_ALIVE) {
         ;(parentComponent!.ctx as KeepAliveContext).activate(
@@ -1128,6 +1139,7 @@ function baseCreateRenderer(
           optimized
         )
       } else {
+        // ? 首次挂载
         mountComponent(
           n2,
           container,
@@ -1139,10 +1151,12 @@ function baseCreateRenderer(
         )
       }
     } else {
+      // ? diff
       updateComponent(n1, n2, optimized)
     }
   }
 
+  // ? 首次挂载组件
   const mountComponent: MountComponentFn = (
     initialVNode,
     container,
@@ -1152,6 +1166,7 @@ function baseCreateRenderer(
     isSVG,
     optimized
   ) => {
+    // ? 创建组件实例
     const instance: ComponentInternalInstance = (initialVNode.component = createComponentInstance(
       initialVNode,
       parentComponent,
@@ -1176,6 +1191,7 @@ function baseCreateRenderer(
     if (__DEV__) {
       startMeasure(instance, `init`)
     }
+    // ? 安装组件
     setupComponent(instance)
     if (__DEV__) {
       endMeasure(instance, `init`)
@@ -1199,6 +1215,7 @@ function baseCreateRenderer(
       return
     }
 
+    // ? 渲染，虚拟dom变真实dom，追加到容器container内
     setupRenderEffect(
       instance,
       initialVNode,
@@ -1260,7 +1277,9 @@ function baseCreateRenderer(
     optimized
   ) => {
     // create reactive effect for rendering
+    // ? update
     instance.update = effect(function componentEffect() {
+      // ? 并未挂载，初始化
       if (!instance.isMounted) {
         let vnodeHook: VNodeHook | null | undefined
         const { el, props } = initialVNode
@@ -1268,11 +1287,13 @@ function baseCreateRenderer(
         if (__DEV__) {
           startMeasure(instance, `render`)
         }
+        // ? renderComponentRoot
         const subTree = (instance.subTree = renderComponentRoot(instance))
         if (__DEV__) {
           endMeasure(instance, `render`)
         }
         // beforeMount hook
+        // ? beforeMount 钩子
         if (bm) {
           invokeArrayFns(bm)
         }
@@ -1298,6 +1319,7 @@ function baseCreateRenderer(
           if (__DEV__) {
             startMeasure(instance, `patch`)
           }
+          // ? 首次dome转换，虚拟dom转换为真实dom
           patch(
             null,
             subTree,
@@ -2114,12 +2136,15 @@ function baseCreateRenderer(
     }
   }
 
+  // ? 渲染函数：将传入的vnode转换为node，追加到container元素中
   const render: RootRenderFunction = (vnode, container) => {
     if (vnode == null) {
+      // ? 删除逻辑
       if (container._vnode) {
         unmount(container._vnode, null, null, true)
       }
     } else {
+      // ? 初始化+更新逻辑
       patch(container._vnode || null, vnode, container)
     }
     flushPostFlushCbs()
@@ -2148,7 +2173,9 @@ function baseCreateRenderer(
     >)
   }
 
+  // ? 渲染器{ render, createApp } createAppAPI
   return {
+    // ? 上面声明了一个渲染函数，它可以转换vnode
     render,
     hydrate,
     createApp: createAppAPI(render, hydrate)
