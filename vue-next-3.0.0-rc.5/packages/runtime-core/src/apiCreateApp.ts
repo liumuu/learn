@@ -209,7 +209,7 @@ export function createAppAPI<HostElement>(
         return app
       },
 
-      // ? 
+      // ? mount
       mount(rootContainer: HostElement, isHydrate?: boolean): any {
         if (!isMounted) {
           const vnode = createVNode(rootComponent as Component, rootProps)
