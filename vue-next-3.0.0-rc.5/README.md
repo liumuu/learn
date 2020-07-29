@@ -12,10 +12,10 @@ vue
 
 - compiler-dom
 
-  -compiler-core
+  - compiler-core
 
 - reactivity
 
 - runtime-dom
 
-  -runtime-core
+  - runtime-core
