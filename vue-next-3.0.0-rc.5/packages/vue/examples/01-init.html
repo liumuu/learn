@@ -8,6 +8,7 @@
 <body>
   <div id="app">
     <h2>init</h2>
+    <p>{{foo}}</p>
   </div>
 
   <script src="../dist/vue.global.js"></script>
@@ -15,7 +16,13 @@
     const { createApp } = Vue
     // vue2: new Vue()
     // Vue3: createApp()
-    createApp({}).mount('#app')
+    createApp({
+      data(){
+        return {
+          foo:'foo'
+        }
+      }
+    }).mount('#app')
   </script>
 </body>
 </html>
