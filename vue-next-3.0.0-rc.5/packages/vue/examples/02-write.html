@@ -1,0 +1,58 @@
+<div id="app"></div>
+
+<script>
+  const createAppAPI = (render) => {
+    return function createApp(rootComponent){
+      const app = {
+        mount(rootContainer){
+          const vnode = {
+            tag: 'h2',
+            props: { class: 'title'},
+            children: rootComponent.data().foo
+          }
+
+          render(vnode, rootContainer)
+        }
+      }
+
+      return app
+    }
+  }
+  
+  const createRenderer = (options) => {
+    const render = (vnode, container) => {
+      const parent = options.querySelector(container)
+      const child = options.createElement(vnode.tag)
+      if (typeof vnode.children === 'string') {
+        child.textContent = vnode.children
+      }
+
+      options.insert(child, parent)
+    }
+    
+    return {
+      render,
+      createApp: createAppAPI(render)
+    }
+  }
+
+  const renderer = createRenderer({
+    querySelector(sel){
+      return document.querySelector(sel)
+    },
+    createElement(tag){
+      return document.createElement(tag)
+    },
+    insert(child, parent){
+      parent.appendChild(child)
+    }
+  })
+  
+  renderer.createApp({
+    data(){
+      return {
+        foo: 'FOO'
+      }
+    }
+  }).mount('#app')
+</script>
