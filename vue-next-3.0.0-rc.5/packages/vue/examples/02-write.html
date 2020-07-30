@@ -2,27 +2,31 @@
 
 <script>
   const createAppAPI = (render) => {
+    // rootComponent {}
     return function createApp(rootComponent){
       const app = {
+        // #app
         mount(rootContainer){
+          // child
           const vnode = {
             tag: 'h2',
             props: { class: 'title'},
             children: rootComponent.data().foo
           }
-
+          // child, parent
           render(vnode, rootContainer)
         }
       }
-
+      // app = { mount(rootContainer){} }
       return app
     }
   }
   
   const createRenderer = (options) => {
     const render = (vnode, container) => {
-      const parent = options.querySelector(container)
       const child = options.createElement(vnode.tag)
+      const parent = options.querySelector(container)
+
       if (typeof vnode.children === 'string') {
         child.textContent = vnode.children
       }
@@ -35,7 +39,7 @@
       createApp: createAppAPI(render)
     }
   }
-
+  
   const renderer = createRenderer({
     querySelector(sel){
       return document.querySelector(sel)
