@@ -441,31 +441,34 @@ export function validateComponentName(name: string, config: AppConfig) {
 
 export let isInSSRComponentSetup = false
 
+// ? 13
 export function setupComponent(
   instance: ComponentInternalInstance,
   isSSR = false
 ) {
   isInSSRComponentSetup = isSSR
 
-  // ? 获取组件的属性和孩子
+  // ? 14 获取组件的属性和孩子
   const { props, children, shapeFlag } = instance.vnode
   const isStateful = shapeFlag & ShapeFlags.STATEFUL_COMPONENT
   initProps(instance, props, isStateful, isSSR)
   initSlots(instance, children)
 
-  // ? 安装状态组件(有数据的组件(对象))
+  // ? 15 安装状态组件(有数据的组件(对象))
   const setupResult = isStateful
+    // ? -16
     ? setupStatefulComponent(instance, isSSR)
     : undefined
   isInSSRComponentSetup = false
   return setupResult
 }
 
+// ? 16
 function setupStatefulComponent(
   instance: ComponentInternalInstance,
   isSSR: boolean
 ) {
-  // ? 组件的选项
+  // ? 17 组件的选项
   const Component = instance.type as ComponentOptions
 
   if (__DEV__) {
@@ -494,7 +497,7 @@ function setupStatefulComponent(
     exposePropsOnRenderContext(instance)
   }
   // 2. call setup()
-  // ? 核心代码 composition-api初始化 setup
+  // ? 18 核心代码 composition-api初始化 setup
   const { setup } = Component
   if (setup) {
     const setupContext = (instance.setupContext =
@@ -531,6 +534,7 @@ function setupStatefulComponent(
       handleSetupResult(instance, setupResult, isSSR)
     }
   } else {
+    // ? -19
     finishComponentSetup(instance, isSSR)
   }
 }
@@ -581,7 +585,7 @@ export function registerRuntimeCompiler(_compile: any) {
   compile = _compile
 }
 
-// ? 
+// ? 19
 function finishComponentSetup(
   instance: ComponentInternalInstance,
   isSSR: boolean
