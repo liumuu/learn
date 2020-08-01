@@ -1,0 +1,23 @@
+<div id="app">
+  <h1>reactive</h1>
+  <p @click="add">{{counter}}</p>
+</div>
+
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+  const { createApp, reactive, toRefs } = Vue
+
+  createApp({
+    setup() {
+      const data = reactive({
+        counter: 0,
+      })
+
+      function add() {
+        data.counter++
+      }
+
+      return { ...toRefs(data), add }
+    },
+  }).mount('#app')
+</script>
