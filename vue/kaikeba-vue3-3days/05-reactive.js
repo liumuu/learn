@@ -61,7 +61,7 @@ function createReactiveEffect(fn) {
         // ? 2.执行
         return fn(...args)
       } finally {
-        // ? 3.出栈
+        // ? 3.出栈 去掉临时保存
         effectStack.pop()
       }
     }
@@ -105,7 +105,7 @@ function trigger(target, key) {
   }
 
   // ? 获取key对应的cbs
-  const dps = depMap.get(key)
+  const deps = depMap.get(key)
   if (deps) {
     deps.forEach((dep) => dep())
   }

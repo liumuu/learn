@@ -1,0 +1,23 @@
+<div id="app"></div>
+
+<script src="./05-reactive.js"></script>
+<script>
+  // ?
+  const obj = {
+    name: 'Tom',
+    age: 18,
+  }
+
+  // ? 代理
+  const data = reactive(obj)
+
+  effect(() => {
+    app.innerHTML = `
+      <h1>${data.name} is ${data.age} years old.</h1>
+    `
+  })
+
+  setInterval(() => {
+    data.age++
+  }, 2000)
+</script>
