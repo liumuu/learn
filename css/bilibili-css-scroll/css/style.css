@@ -1,0 +1,89 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  /* ? perspective 属性定义 3D 元素距视图的距离，以像素计。 */
+  /* ? perspective 透视 */
+  perspective: 100px;
+  transform-style: preserve-3d;
+  overflow-y: auto;
+}
+
+html {
+  overflow: hidden;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.list-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 60vh;
+  overflow: hidden;
+}
+
+.list-item:hover .item-image::before {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.item-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  /* ? 定义 3D 转换，只是用 Z 轴的值。 */
+  /* ? scale(x,y)	定义 2D 缩放转换。 */
+  transform: translateZ(-50px) scale(2);
+}
+
+.item-image::before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  transition: all 0.5s ease;
+}
+
+.item-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item-text {
+  color: #ffffff;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  width: 60%;
+}
+
+.text-title {
+  font-size: 2rem;
+  font-weight: bolder;
+  margin-bottom: 20px;
+}
+
+.text-desc {
+  font-size: 1.2rem;
+}
