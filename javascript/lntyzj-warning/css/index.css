@@ -1,0 +1,31 @@
+body {
+  background-color: #f1f1f1;
+  margin: 0;
+}
+
+body,
+input,
+.container {
+  margin: 50px auto 40px auto;
+  width: 600px;
+  text-align: center;
+}
+
+p {
+  color: rgba(0, 0, 0, 0.5);
+  margin: 10px 0 10px;
+  font-size: 22px;
+  font-weight: 200;
+  line-height: 1.6em;
+}
+
+p span {
+  font-size: 12px;
+}
+p a {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.5);
+}
+p a:hover {
+  color: red;
+}
