@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>change-title</title>
+  </head>
+  <body>
+    <script>
+      let msgNum = 1
+      let cnt = 0
+      const interval = setInterval(() => {
+        // 余数
+        cnt = (cnt + 1) % 2
+        
+        if (msgNum === 0) {
+          document.title += '聊天页面'
+          clearInterval(interval)
+          return
+        }
+
+        const prefix = cnt % 2 ? `新消息(${msgNum})` : ''
+        document.title = `${prefix}聊天页面`
+      }, 1000)
+    </script>
+  </body>
+</html>
