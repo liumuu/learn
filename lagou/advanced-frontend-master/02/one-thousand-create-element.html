@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>one-thousand-create-element</title>
+  </head>
+  <body>
+    <script>
+      const times = 100000
+      console.time('createElement')
+      for (let i = 0; i < times; i++) {
+        const div = document.createElement('div')
+        document.body.appendChild(div)
+      }
+      console.timeEnd('createElement')
+
+      console.time('innerHTML')
+      let html = ''
+      for (let i = 0; i < times; i++) {
+        html += '<div></div>'
+      }
+      document.body.innerHTML += html
+      console.timeEnd('innerHTML')
+    </script>
+  </body>
+</html>

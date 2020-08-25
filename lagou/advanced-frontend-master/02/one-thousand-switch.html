@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>one-thousand-switch</title>
+  </head>
+  <body>
+    <script>
+      const times = 100000
+      console.time('switch')
+      for (let i = 0; i < times; i++) {
+        // void 0和undefined是等价的
+        document.body === 1 ? console.log(1) : void 0
+      }
+      console.timeEnd('switch')
+
+      var body = JSON.stringify(document.body)
+
+      console.time('batch')
+      for (let i = 0; i < times; i++) {
+        body === 1 ? console.log(1) : void 0
+      }
+      console.timeEnd('batch')
+    </script>
+  </body>
+</html>
